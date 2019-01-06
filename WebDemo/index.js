@@ -24,7 +24,7 @@ app.get('/articles', (req, res, next) => {
 // 创建一篇文章
 app.post('/articles', (req, res, next) => {
     const article = { title: req.body.title, content: req.body.content };
-    Article.create(article, (err, article) => {
+    Article.create(article, (err) => {
         if (err) return next(err);
         res.send('OK');
     });
