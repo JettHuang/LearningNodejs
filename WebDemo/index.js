@@ -10,6 +10,11 @@ const port = process.env.PORT || 3000;
 app.use(bodyParser.json()); // 支持编码为json的请求消息体
 app.use(bodyParser.urlencoded({ extended: true })); // 支持编码为表单的请求消息体
 
+app.use(
+    '/css/bootstrap.css',
+    express.static('node_modules/bootstrap/dist/css/bootstrap.css')
+);
+
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
@@ -18,7 +23,15 @@ app.get('/', (req, res) => {
 app.get('/articles', (req, res, next) => {
     Article.all((err, articles) => {
         if (err) return next(err);
-        res.send(articles);
+
+        res.format({
+            html: () => {
+                res.render('articles.ejs', { articles });
+            },
+            json: () => {
+                res.send(articles);
+            }
+        });
     });
 });
 
